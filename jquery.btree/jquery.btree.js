@@ -736,13 +736,13 @@
                 var spanCss = getSpanCss(n, lastSibling);
 
                 html += '<li>';
-                html += '<span id="' + n.id + '" class="' + spanCss + ' ">'; // wrapper span
+                html += '<div id="' + n.id + '" class="' + spanCss + ' ">'; // wrapper span
                 html += forceOpenNode ? '' : '<span class="easytree-expander"></span>';
 
                 html += getIconHtml(n);
                 html += getTitleHtml(n);
 
-                html += '</span>'; // end wrapper span
+                html += '</div>'; // end wrapper div
 
                 if (n.children && n.children.length > 0) { // if has children
                     html += getNodesAsHtml(n.children, level + 1, n.isExpanded);
