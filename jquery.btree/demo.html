@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jQuery EasyTree Demo</title>
+
+  <link rel="stylesheet" type="text/css" href="jquery.btree.css">
+
+  <script src="jquery-1.11.1.min.js" type="text/javascript"></script>
+  <script src="jquery.btree.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <div id="tree-container">
+  </div>
+
+  <script type="text/javascript">
+
+  var data = [
+    {
+      pid: 1,
+      text: "智慧狮",
+      isFolder: true,
+      children: [
+        { pid: 2, isFolder: true, text: "产品研发中心", children: [] },
+        { pid: 3, isFolder: true, text: "内容研发中心", children: [] },
+        { pid: 4, isFolder: true, text: "德玛西亚", children: [] },
+      ]
+    },
+    {
+      pid: null,
+      text: "停用用户",
+      isFolder: true,
+      children: []
+    }
+  ];
+
+  $(document).ready(function(){
+
+    $("#tree-container").easytree({data: data});
+
+  });
+
+  </script>
+
+</body>
+</html>
