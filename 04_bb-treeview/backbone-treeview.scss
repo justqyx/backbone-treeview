@@ -1,0 +1,89 @@
+/* sass backbone-treeview.scss:backbone-treeview.css --watch */
+.treeview {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .treeview-node {
+    display: block;
+    white-space: nowrap;
+    text-decoration: none;
+    border: 1px solid #fff;
+    border-width: 1px 0;
+    color: #2974B6;
+    cursor: pointer;
+  }
+
+  .treeview-node-on {
+    background: #e5f0fb;
+    border-color: #BBD4EF #fff;
+  }
+
+  .treeview-node:hover,
+  .treeview-node-hover {
+    background: #f4f9fd;
+    border-color: #e5f0fb;
+  }
+
+  .treeview-node .treeview-node-handler {
+    display: block;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 4px 0;
+    color: #333;
+  }
+
+  .treeview-node .treeview-node-txt {
+    font: 12px/1.5 tahoma,arial,"宋体";
+  }
+}
+
+.treeview-collapse {
+  display: none;
+}
+
+.treeview-node {
+
+  .b-in-blk {
+    display: inline-block;
+    zoom: 1;
+    vertical-align: middle;
+    background: url('images/backbone-treeview.png') 99999px 99999px no-repeat;
+  }
+
+  .plus {
+    margin: 0 3px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    background-position: 0px -1px;
+  }
+
+  .folder {
+    width: 22px;
+    height: 18px;
+    margin-right: 5px;
+    background-position: -21px -1px;
+  }
+}
+
+.treeview-node.treeview-node-on {
+  .plus {
+    background-position: 0px -24px;
+  }
+
+  .folder {
+    background-position: -21px -24px;
+  }
+}
+
+.treeview-node.treenode-empty {
+  .plus {
+    background-position: 99999px 99999px;
+  }
+}

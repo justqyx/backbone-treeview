@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>测试样式</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="backbone-treeview.css">
+
+<style type="text/css">
+  #tree-wrapper {
+    padding: 30px;
+    margin: 30px auto 0 auto;
+    border: 1px solid #F2F2F2;
+  }
+</style>
+<body>
+
+  <div id="tree-wrapper">
+    <ul class="treeview">
+      <li>
+        <div class="treeview-node treeview-node-on" _pl="0" style="padding-left:0px">
+          <span class="treeview-node-handler">
+            <em class="b-in-blk plus"></em>
+            <dfn class="b-in-blk folder"></dfn>
+            <span class="treeview-node-txt">全部文件</span>
+          </span>
+        </div>
+        <ul class="treeview">
+          <li>
+            <div class="treeview-node treenode-empty" _pl="15" style="padding-left:15px">
+              <span class="treeview-node-handler">
+                <em class="b-in-blk plus"></em>
+                <dfn class="b-in-blk folder"></dfn>
+                <span class="treeview-node-txt">Programming</span>
+              </span>
+            </div>
+            <ul class="treeview treeview-collapse" _pl="30"></ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</body>
+</html>
