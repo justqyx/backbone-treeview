@@ -9,6 +9,12 @@
 
 
 (function ($) {
+    // 记录所有 EasyTree 对象
+    var _globalTrees = [];
+
+    $.fn.getEasytreeObj = function(treeId) {
+        return _globalTrees[treeId];
+    }
 
     $.fn.easytree = function (options) {
         var jQueryContext = this;
@@ -39,6 +45,9 @@
     var EasyTree = function (jQueryContext, options) {
 
         var _settings = {
+            treeId: null,
+            treeObj: null,
+
             allowActivate: true,
             data: null,
             dataUrl: null,
@@ -48,6 +57,9 @@
             ordering: null, // ordered || orderedFolder
             slidingTime: 100,
             minOpenLevels: 0,
+
+            defaultToFolder: false,
+            defaultToFolderIfHasChildren: true,
 
             // events
             building: null,
@@ -76,6 +88,13 @@
             init();
 
             $this = jQueryContext;
+
+            // 保存 EasyTree 对象，以便能够通过 ID 获得其对象
+            if (_settings.treeId == null) {
+                _settings.treeId = jQueryContext.attr("id");
+            }
+            _settings.treeObj = this;
+            _globalTrees[_settings.treeId] = _settings;
 
             var json = '';
             if (_settings.dataUrl) {
@@ -724,7 +743,11 @@
             var forceOpenNode = level < _settings.minOpenLevels;
 
             var ulStyle = level == 0 || display || forceOpenNode ? "" : " style='display:none' ";
-            html += '<ul tabindex="0" class="' + ulCss + '" ' + ulStyle + '">';
+
+            // 计算该 ul 下的结点应该缩进缩少 px;
+            currentPL = level * basePL;
+
+            html += '<ul tabindex="0" class="' + ulCss + '" ' + ulStyle + '" _pl="' + currentPL + '">';
 
             for (i = 0; i < nodes.length; i++) {
                 var n = nodes[i];
@@ -733,10 +756,17 @@
                     n.isExpanded = true;
                 }
 
+                // Init n.isFolder
+                if (n.isFolder == null) {
+                    if (_settings.defaultToFolder) { n.isFolder = true; }
+                    if (_settings.defaultToFolderIfHasChildren == true) {
+                        if (n.children && n.children.length > 0) { n.isFolder = true; }
+                    }
+                }
+
                 var lastSibling = i == nodes.length - 1;
                 var spanCss = getSpanCss(n, lastSibling);
 
-                currentPL = level * basePL;
 
                 html += '<li>';
                 html += '<div id="' + n.id + '" class="' + spanCss + ' " style="padding-left:' + currentPL +'px;">'; // wrapper div
@@ -781,9 +811,11 @@
             spanCss += getExpCss(node, lastSibling);
 
             var ico = node.isExpanded ? "e" : "c";
+
             if (node.isFolder) {
                 ico += "f";
             }
+
             spanCss += " easytree-ico-" + ico;
 
             return spanCss;

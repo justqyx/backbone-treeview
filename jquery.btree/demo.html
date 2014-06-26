@@ -3,10 +3,10 @@
 <head>
   <title>jQuery EasyTree Demo</title>
 
-  <link rel="stylesheet" type="text/css" href="jquery.btree.css">
+  <link rel="stylesheet" type="text/css" href="jquery.easytree2.css">
 
   <script src="jquery-1.11.1.min.js" type="text/javascript"></script>
-  <script src="jquery.btree.js" type="text/javascript"></script>
+  <script src="jquery.easytree2.js" type="text/javascript"></script>
 
   <style type="text/css">
     #tree-container {
@@ -27,16 +27,15 @@
     {
       pid: 1,
       text: "智慧狮",
-      isFolder: true,
       children: [
-        { pid: 2, isFolder: true, text: "产品研发中心",
+        { pid: 2, text: "产品研发中心",
           children: [
             { pid: 5, text: "产品部" },
             { pid: 5, text: "技术部" },
             { pid: 5, text: "革命部" },
           ]
         },
-        { pid: 3, isFolder: true, text: "内容研发中心", children: [] },
+        { pid: 3, isFolder: false, text: "内容研发中心", children: [] },
         { pid: 4, isFolder: true, text: "德玛西亚", children: [] },
       ]
     },
