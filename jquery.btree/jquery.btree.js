@@ -714,6 +714,7 @@
         function getNodesAsHtml(nodes, level, display) {
             var html = '';
             var i = 0;
+            var basePL = 15, currentPL = 0;
 
             var ulCss = "";
             if (level == 0) {
@@ -735,8 +736,10 @@
                 var lastSibling = i == nodes.length - 1;
                 var spanCss = getSpanCss(n, lastSibling);
 
+                currentPL = level * basePL;
+
                 html += '<li>';
-                html += '<div id="' + n.id + '" class="' + spanCss + ' ">'; // wrapper span
+                html += '<div id="' + n.id + '" class="' + spanCss + ' " style="padding-left:' + currentPL +'px;">'; // wrapper div
                 html += forceOpenNode ? '' : '<span class="easytree-expander"></span>';
 
                 html += getIconHtml(n);
