@@ -77,10 +77,23 @@
             stateChanged: null
         };
 
+        // jquery context of the tree container
         var $this;
-        var _nodes = null;
-        var _dnd = new Object(); // initiate internal dnd helper object
 
+        // Store all nodes
+        var _nodes = null;
+
+        // For drag
+        // initiate internal dnd helper object
+        var _dnd = new Object();
+
+        /*
+         * the initialize of the TreeView
+         *
+         * 一个 Tree 视图，需有这样的能力
+         * 1. 管理 tree node data 的数据的能力
+         * 2. 操作 tree node view 的能力
+        **/
         this.init = function (jQueryContext, options) {
 
             _settings = $.extend(_settings, options);
@@ -128,7 +141,21 @@
             return this;
         };
 
-        //public helpers
+        /* The power of the TreeView
+         * 
+         * [POWERS]
+         * get all nodes
+         * get selected nodes
+         * get a node by sth
+         * add a node
+         * remove a node
+         * make a node selected
+         * expand or collapse a node
+         *
+         * [NOTES]
+         * if you prefer the mvc pattern, 
+         * then all of methods above should delegate to a TreeController(or TreeStategy) instance
+        **/
         this.options = _settings;
         this.rebuildTree = function (data) {
             var json = data ? convertInputDataToJson(data) : _nodes;
@@ -185,11 +212,14 @@
             toggleNodeBegin(event, _nodes, node);
         };
 
-        /*
-         * Private Methods
+        /* called: TreeController or TreeStrategy
+         *
+         * [Events]
+         * do what when click a node
+         * do what when dbclick a node
+         * do what when drap a node
+         * ....
         **/
-
-        // events
         function nodeClick(event) {
             var id = getElementId(this);
             var nodes = event.data;
@@ -659,7 +689,7 @@
             }
         }
 
-        // rendering
+        // Render tree
         function buildTree(nodes) {
             if (!nodes) { return; }
 
