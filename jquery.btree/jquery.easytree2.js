@@ -185,6 +185,10 @@
             toggleNodeBegin(event, _nodes, node);
         };
 
+        /*
+         * Private Methods
+        **/
+
         // events
         function nodeClick(event) {
             var id = getElementId(this);
