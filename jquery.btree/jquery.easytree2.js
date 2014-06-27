@@ -120,16 +120,14 @@
                     buildTree(json);
                     return this;
                 });
-            }
-            else if (_settings.data) {
+            } else if (_settings.data) {
                 json = convertInputDataToJson(_settings.data);
                 if (!json) {
                     alert("EasyTree: Invalid data!");
                     return this;
                 }
                 buildTree(json);
-            }
-            else {
+            } else {
                 json = convertInputDataToJson($this.html());
                 if (!json) {
                     alert("EasyTree: Invalid data!");
@@ -210,6 +208,12 @@
             if (!node) { return; }
 
             toggleNodeBegin(event, _nodes, node);
+        };
+        this.getSingleSelectedNode = function() {
+            return getSingleSelectedNode(_nodes);
+        };
+        this.getSelectedNodes = function() {
+            return getSelectedNodes(_nodes);
         };
 
         /* called: TreeController or TreeStrategy
@@ -612,6 +616,39 @@
                 }
             }
         }
+        function getSingleSelectedNode(nodes) {
+            var node = null;
+            for(var index=0; index < nodes.length; index++) {
+                if (nodes[index].isActive) {
+                    node = nodes[index];
+                    break;
+                }
+
+                if (nodes[index].children && nodes[index].children.length > 0) {
+                    node = getSingleSelectedNode(nodes[index].children);
+                    if (node) { break; }
+                }
+            }
+            return node;
+        }
+        function getSelectedNodes(nodes) {
+            var selected = []
+
+            for (var i=0; i < nodes.length; i++) {
+                var node = nodes[i];
+
+                if (node.isActive) {
+                    selected.push(node);
+                }
+
+                if (node.children && node.children.length > 0) {
+                    var _selected = getSelectedNodes(node.children);
+                    selected.concat(_selected);
+                }
+            }
+
+            return selected;
+        }
         function unactivateAll(nodes) {
             var i = 0;
             for (i = 0; i < nodes.length; i++) {
@@ -725,9 +762,8 @@
             var s6 = new Date();
 
             $($this.selector + " .easytree-node").on("click", nodes, nodeClick);
-            $($this.selector + " .easytree-expander").on("click", nodes, toggleNodeEvt);
-            $($this.selector + " .easytree-icon").on("dblclick", nodes, toggleNodeEvt);
-            $($this.selector + " .easytree-title").on("dblclick", nodes, toggleNodeEvt);
+            $($this.selector + " .easytree-node").on("dblclick", nodes, toggleNodeEvt);
+            $($this.selector + " .easytree-expander").on('click', nodes, toggleNodeEvt);
 
             var s7 = new Date();
 

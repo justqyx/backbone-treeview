@@ -21,6 +21,8 @@
   <div id="tree-container">
   </div>
 
+  <button id="get-selected-nodes">获取选中的结点</button>
+
   <script type="text/javascript">
 
   var data = [
@@ -49,7 +51,15 @@
 
   $(document).ready(function(){
 
-    $("#tree-container").easytree({data: data});
+    var treeObj = $("#tree-container").easytree({
+      data: data
+    });
+
+    window.qiu = treeObj;
+
+    $("#get-selected-nodes").on('click', function(e){
+      console.dir(treeObj.getSingleSelectedNode());
+    });
 
   });
 
