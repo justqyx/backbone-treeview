@@ -74,7 +74,11 @@
             canDrop: null,
             dropping: null,
             dropped: null,
-            stateChanged: null
+            stateChanged: null,
+
+            callback: {
+                onclick: null,
+            }
         };
 
         // jquery context of the tree container
@@ -203,10 +207,7 @@
             node.isActive = true;
             $('#' + node.id).addClass('easytree-active');
         };
-        this.toggleNode = function (id) {
-            var node = getNode(_nodes, id);
-            if (!node) { return; }
-
+        this.toggleNode = function (node) {
             toggleNodeBegin(event, _nodes, node);
         };
         this.getSingleSelectedNode = function() {
@@ -215,6 +216,8 @@
         this.getSelectedNodes = function() {
             return getSelectedNodes(_nodes);
         };
+
+        var treeObj = this;
 
         /* called: TreeController or TreeStrategy
          *
@@ -237,7 +240,12 @@
             }
 
             node.isActive = true;
+
             $('#' + node.id).addClass('easytree-active');
+
+            if (_settings.callback.onclick) {
+                _settings.callback.onclick(treeObj, node);
+            }
 
             if (_settings.stateChanged) { // fire stateChanged event
                 var j = getMinifiedJson(nodes);
@@ -762,7 +770,6 @@
             var s6 = new Date();
 
             $($this.selector + " .easytree-node").on("click", nodes, nodeClick);
-            $($this.selector + " .easytree-node").on("dblclick", nodes, toggleNodeEvt);
             $($this.selector + " .easytree-expander").on('click', nodes, toggleNodeEvt);
 
             var s7 = new Date();

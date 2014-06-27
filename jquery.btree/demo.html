@@ -37,8 +37,8 @@
             { pid: 5, text: "革命部" },
           ]
         },
-        { pid: 3, isFolder: false, text: "内容研发中心", children: [] },
-        { pid: 4, isFolder: true, text: "德玛西亚", children: [] },
+        { pid: 3, text: "内容研发中心", children: [] },
+        { pid: 4, text: "德玛西亚", children: [] },
       ]
     },
     {
@@ -51,14 +51,17 @@
 
   $(document).ready(function(){
 
-    var treeObj = $("#tree-container").easytree({
-      data: data
+    var tree = $("#tree-container").easytree({
+      data: data,
+      callback: {
+        onclick: function(treeObj, node) {
+          treeObj.toggleNode(node);
+        }
+      }
     });
 
-    window.qiu = treeObj;
-
     $("#get-selected-nodes").on('click', function(e){
-      console.dir(treeObj.getSingleSelectedNode());
+      console.dir(tree.getSingleSelectedNode());
     });
 
   });
