@@ -153,7 +153,7 @@
             this.getSelectedNode = function() {
                 if (DB.selectedNodeContext) {
                     var pid = parseInt(DB.selectedNodeContext.attr("_pid"))
-                    return HELPER.FindNodeByPid(pid);
+                    return HELPER.FindNodeByPid(DB.nodes, pid);
                 } else {
                     return null;
                 }
@@ -288,8 +288,8 @@
             var treeddControl = this;
 
             var w = $input.width()
-              , w1 = w - 20       // 去掉 tsText 的左右 padding 值
-              , w2 = w - 20 - 15
+              , w1 = w - 3       // 去掉 tsText 的左右 padding 值
+              , w2 = w - 3 - 15
 
             // 隐藏面板
             this.hide = function() {
@@ -365,7 +365,7 @@
 
                 $tsChoice = $('<div class="ts-choice"></div>')
                 $tsText   = $('<span class="ts-text"></span>')
-                $tsEmpty  = $('<span class="ts-empty">x</span>')
+                $tsEmpty  = $('<span class="ts-empty"></span>')
 
                 $tsChoice.append($tsText)
                 $tsChoice.append($tsEmpty)
@@ -407,8 +407,11 @@
                 })
 
                 $tsEmpty.on('click', function(e) {
-                    $tddInput.val('')
+                    $tsInput.val('')
+                    $tsText.html('')
+                    $tsEmpty.css("display", "none");
                     treeddControl.treeObj.unselectAll();
+                    e.preventDefault();
                 })
 
                 $tpfCancelBtn.on('click', function(e) {
@@ -421,17 +424,24 @@
                     if (treeddControl.treeObj) {
                         var node = treeddControl.treeObj.getSelectedNode();
 
+                        if (!node) {
+                            return false;
+                        }
+                        
                         // Hide the TreeDropdwon panel
                         treeddControl.hide();
 
                         // Update display dom nodes
-                        $tsInput.val(node["pid"])
-                        $tsText.html(node["text"])
+                        $tsInput.val(node.pid)
+                        $tsText.html(node.text)
+
+                        $tsText.css("width", w2);
+                        $tsEmpty.css("display", "inline-block");
 
                         // fire the OK_BUTTON click callback
-                        if (_settings.callback.onOkClick) {
-                            _settings.callback.onOkClick.apply(treeddControl, { node: node })
-                        }                   
+                        if (_settings.onOkClick) {
+                            _settings.onOkClick.apply(treeddControl, { node: node })
+                        }
                     } else {
                         // oh my god, it's too slow.
                         console.warn("Tree is not ready yet!");

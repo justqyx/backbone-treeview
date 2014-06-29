@@ -1,6 +1,6 @@
 // Tree Dropdown Panel Style
 .tree-selectbox {
-  display: inline-block;
+  display: block;
   background-color: #fff;
   min-width: 78px;
 
@@ -17,8 +17,10 @@
   .ts-choice > .ts-text {
     display: inline-block;
     min-width: 50px;
-    height: 22px;
-    padding: 5px 10px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 32px;
+    padding: 0px 10px;
   }
 
   .ts-choice > .ts-empty {
@@ -29,6 +31,8 @@
     cursor: pointer;
     text-align: center;
     margin: 9px auto;
+    background-image: url('images/treeview.png');
+    background-position: -35px -1px;
   }
 
   &.selectbox-on {
