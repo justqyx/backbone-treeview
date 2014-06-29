@@ -25,8 +25,8 @@
 
                 html += '<li>';
                 html += '<div _pid="' + n.pid + '" class="' + spanCss + ' " style="padding-left:' + currentPL +'px;">';
-                html += '<span class="simpletree-expander"></span>';
 
+                html += HELPER.GetExpHTML(n);
                 html += HELPER.GetIconHTML(n);
                 html += HELPER.GetTitleHTML(n);
 
@@ -41,6 +41,18 @@
 
             html += '</ul>';
             return html;
+        },
+
+        GetExpHTML: function(node) {
+            css = "simpletree-";
+
+            if (node.children && node.children.length > 0) {
+                css += "expander"
+            } else {
+                css += "empty"
+            }
+
+            return '<span class="'+ css +'"></span>';
         },
 
         GetSpanCss: function(node) {
