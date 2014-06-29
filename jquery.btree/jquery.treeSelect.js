@@ -288,13 +288,13 @@
             var treeddControl = this;
 
             var w = $input.width()
-              , w1 = w - 3       // 去掉 tsText 的左右 padding 值
-              , w2 = w - 3 - 15
+              , w1 = w - 4       // 去掉 tsText 的左右 padding 值
+              , w2 = w - 20      // 4 + 15 + 1;
 
             // 隐藏面板
             this.hide = function() {
                 // the tree selectbox
-                $tsText.css("width", w1);
+                $tsText.css("width", w2);
                 $treeSelectbox.removeClass("selectbox-on");
 
                 // the tree selectbox panel
@@ -416,6 +416,7 @@
 
                 $tpfCancelBtn.on('click', function(e) {
                     treeddControl.hide();
+                    $tsText.css("width", w1);
                 });
 
                 $tpfOkBtn.on('click', function(e) {
