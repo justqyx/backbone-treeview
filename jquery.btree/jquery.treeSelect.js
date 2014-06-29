@@ -4,7 +4,7 @@
     // tree.show
     // tree.getSelected
 
-    $.fn.treeDropdown = function(options) {
+    $.fn.treeSelect = function(options) {
 
         var $input = this;
 
@@ -50,20 +50,35 @@
             var treeddControl = this;
 
             var w = $input.width()
-            var emptyBtnWidth = 15;
+              , w1 = w - 20       // 去掉 tsText 的左右 padding 值
+              , w2 = w - 20 - 15
 
             // 隐藏面板
             this.hide = function() {
-                $tddText.css("width", w - emptyBtnWidth);
-                $treeContainer.removeClass("treedd-container-on");
+                // the tree selectbox
+                $tsText.css("width", w1);
+                $treeSelectbox.removeClass("selectbox-on");
+
+                // the tree selectbox panel
+                $treeSelectPanel.css("display", "none");
+
+                // the marker
                 this.isActive = false;
             }
 
             // 显示面板
             this.show = function() {
-                $tddText.css("width", w);
-                $tddEmpty.css("display", "none");
-                $treeContainer.addClass("treedd-container-on");
+                // the tree selectbox
+                $tsText.css("width", w1);
+                $tsEmpty.css("display", "none");
+                $treeSelectbox.addClass("selectbox-on");
+
+                // the tree selectbox panel
+                var top  = $treeSelectbox.offset().top + 34;
+                var left = $treeSelectbox.offset().left;
+                $treeSelectPanel.css({top: top, left: left, display: 'inline-block'});
+
+                // the marker
                 this.isActive = true;
             }
 
@@ -83,12 +98,15 @@
             ** Private variables and methods
             ***************************************/
 
-            var $treeContainer = null
-              , $tddChoice = null
-              , $tddText   = null
-              , $tddEmpty  = null
-              , $tddArrow  = null
-              , $tddBody   = null;
+            var $treeSelectbox = null
+              , $tsInput  = null
+              , $tsChoice = null
+              , $tsText   = null
+              , $tsEmpty  = null
+
+            var $treeSelectPanel  = null
+              , $treeSelectBody   = null
+              , $treeSelectFooter = null
 
             var currentNode = null;
 
@@ -99,64 +117,64 @@
             }
 
             function initTDDContext() {
-                $treeContainer = $('<div class="treedd-container"></div>')
+                /* Tree Selectbox */
+                $treeSelectbox = $('<div class="tree-selectbox"></div>')
 
-                // Form Input Control
-                $tddInput  = $input.clone()
+                $tsInput  = $input.clone()
 
-                // Choice
-                $tddChoice = $('<div class="treedd-choice"></div>')
-                $tddText   = $('<span class="treedd-text"></span>')
-                $tddEmpty  = $('<span class="treedd-empty">x</span>')
+                $tsChoice = $('<div class="ts-choice"></div>')
+                $tsText   = $('<span class="ts-text"></span>')
+                $tsEmpty  = $('<span class="ts-empty">x</span>')
 
-                $tddChoice.append($tddText)
-                $tddChoice.append($tddEmpty)
+                $tsChoice.append($tsText)
+                $tsChoice.append($tsEmpty)
 
-                // Body
-                $tddBody   = $('<div class="tdd-body"></div>')
+                $treeSelectbox.append($tsInput)
+                $treeSelectbox.append($tsChoice)
+
+                /* Tree Selectbox Panel */
+                $treeSelectPanel = $('<div class="tree-selectbox-panel"></div>')
+
+                $tpBody   = $('<div class="tp-body"></div>')
 
                 // Footer
-                $tddFooter    = $('<div class="tdd-footer"></div>')
-                $tddOkBtn     = $('<a href="javascript:void(0);">' + _settings.okBtnText + '</a>')
-                $tddCancelBtn = $('<a href="javascript:void(0);">' + _settings.cancelBtnText +'</a>')
+                $tpFooter     = $('<div class="tp-footer"></div>')
+                $tpfOkBtn     = $('<a href="javascript:void(0);">' + _settings.okBtnText + '</a>')
+                $tpfCancelBtn = $('<a href="javascript:void(0);">' + _settings.cancelBtnText +'</a>')
 
-                $tddFooter.append($tddOkBtn)
-                $tddFooter.append($tddCancelBtn)
+                $tpFooter.append($tpfOkBtn)
+                $tpFooter.append($tpfCancelBtn)
 
-                // 九九归一
-                $treeContainer.append($tddInput)
-                $treeContainer.append($tddChoice)
-                $treeContainer.append($tddBody)
-                $treeContainer.append($tddFooter)
+                $treeSelectPanel.append($tpBody)
+                $treeSelectPanel.append($tpFooter)
 
+                /* Init Style */
+                $tsInput.css("display", "none");
 
-                // Init Style
-                $tddInput.css("display", "none");
-                $treeContainer.css("width", w);
-                $tddText.css("width", w - emptyBtnWidth);
+                // Two control
+                $treeSelectbox.css("width", w);
+                $treeSelectPanel.css("width", w);
+
+                // The text
+                $tsText.css("width", w1);
             }
 
             function setupEvents() {
-                $tddChoice.on('click', function(e) {
+                $tsChoice.on('click', function(e) {
                     e.preventDefault();
                     treeddControl.toggle();
                 })
 
-                $tddEmpty.on('click', function(e) {
+                $tsEmpty.on('click', function(e) {
                     $tddInput.val('')
                     currentNode = null;
-
-                    // fire the CANCEL_BUTTON click callback
-                    // if (_settings.callback.onCancelClick != null) {
-                    //     _settings.callback.onCancelClick.apply(treeddControl, {});
-                    // }
                 })
 
-                $tddCancelBtn.on('click', function(e) {
+                $tpfCancelBtn.on('click', function(e) {
                     treeddControl.hide();
                 });
 
-                $tddOkBtn.on('click', function(e) {
+                $tpfOkBtn.on('click', function(e) {
                     e.preventDefault();
 
                     if (treeddControl.treeObj) {
@@ -169,8 +187,8 @@
                         treeddControl.hide();
 
                         // Update display dom nodes
-                        $tddInput.val(currentNode[_settings.valueKey])
-                        $tddText.html(currentNode["text"])
+                        $tsInput.val(currentNode[_settings.valueKey])
+                        $tsText.html(currentNode["text"])
 
                         // fire the OK_BUTTON click callback
                         if (_settings.callback.onOkClick) {
@@ -185,7 +203,8 @@
             }
 
             function showTreeddPanel() {
-                $input.replaceWith($treeContainer);
+                $input.replaceWith($treeSelectbox);
+                $('body').append($treeSelectPanel);
             }
 
             function buildTree() {
