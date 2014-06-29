@@ -105,13 +105,10 @@
 }
 
 // ==========================================================
-
-// The TreeView Style
-.ui-helper-hidden {
-  display: none;
+.ui-simpletree {
 }
 
-.tddtreeview-container {
+.simpletree-container {
   font-family: tahoma, arial, helvetica;
   font-size: 14px; /* font size should not be too big */
   white-space: nowrap;
@@ -124,52 +121,30 @@
   &:focus { outline: none; }
 }
 
-ul.tddtreeview-container ul {
+.simpletree-container ul {
   padding: 0;
   margin: 0;
 
   &:focus { outline: none; }
+
+  li {
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    -moz-background-clip: border;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    background-attachment: scroll;
+    background-color: transparent;
+    background-position: 0 0;
+    background-repeat: repeat-y;
+    background-image: none;
+    margin: 0;
+    padding: 0;
+  }
 }
 
-ul.tddtreeview-container li
-{
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none;
-  -moz-background-clip: border;
-  -moz-background-inline-policy: continuous;
-  -moz-background-origin: padding;
-  background-attachment: scroll;
-  background-color: transparent;
-  background-position: 0 0;
-  background-repeat: repeat-y;
-  background-image: none;  /* no v-lines */
-
-  margin: 0;
-  padding: 0;
-}
-
-/* Suppress lines for last child node */
-ul.tddtreeview-container li.tddtreeview-lastsib {
-  background-image: none;
-}
-
-/* Suppress lines if level is fixed expanded (option minExpandLevel) */
-ul.tddtreeview-no-connector > li {
-  background-image: none;
-}
-
-/* Style, when control is disabled */
-.ui-tddtreeview-disabled ul.tddtreeview-container {
-  opacity: 0.5;
-  background-color: silver;
-  /*  filter: alpha(opacity=50); /* Yields a css warning */
-}
-
-/*******************************************************************************
- * Node style and hover style
- */
-.tddtreeview-node {
+.simpletree-node {
   display: block;
   white-space: nowrap;
   text-decoration: none;
@@ -179,48 +154,52 @@ ul.tddtreeview-no-connector > li {
   cursor: pointer;
   padding: 4px 0;
   margin: 0;
+
+  &:hover {
+    background: #f4f9fd;
+    border-color: #e5f0fb;
+  }
+
+  &.simpletree-node-active {
+    background: #e5f0fb;
+    border-color: #BBD4EF #fff;
+  }
 }
 
-.tddtreeview-node:hover {
-  background: #f4f9fd;
-  border-color: #e5f0fb;
-}
-
-.tddtreeview-node.tddtreeview-active
-{
-  background: #e5f0fb;
-  border-color: #BBD4EF #fff;
-}
-
-
-/*******************************************************************************
- * Common icon definitions
- */
-span.tddtreeview-empty,
-span.tddtreeview-vline,
-span.tddtreeview-expander,
-span.tddtreeview-icon,
-span.tddtreeview-checkbox,
-span.tddtreeview-radio,
-span.tddtreeview-drag-helper-img,
-#tddtreeview-drop-marker
-{
-  width: 16px;
-  height: 16px;
-  display: inline-block; /* Required to make a span sizable */
+span.simpletree-expander,
+span.simpletree-icon,
+span.simpletree-empty {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
   vertical-align: top;
   background-repeat: no-repeat;
   background-position: left;
-  background-image: url("images/icons.gif");
-  background-position: 0 0;
+  background-image: url("images/treeview.png");
+  background-position: 9999px 9999px;
+  vertical-align: middle;
 }
-/** Used by iconclass option */
-span.tddtreeview-custom-icon {
+
+span.simpletree-expander {
+  display: inline-block;
+  margin: 0 3px;
+  width: 15px;
+  height: 15px;
+}
+
+span.simpletree-icon {
+  display: inline-block;
+  width: 22px;
+  height: 18px;
+  margin-right: 5px;
+}
+
+
+span.simpletree-custom-icon {
   display: inline-block;
 }
-/** Used by 'icon' node option: */
-.tddtreeview-container img
-{
+
+.simpletree-container img {
   width: 16px;
   height: 16px;
   margin-left: 3px;
@@ -228,127 +207,33 @@ span.tddtreeview-custom-icon {
   border-style: none;
 }
 
-span.tddtreeview-expander
-{
+span.simpletree-expander {
   background-position: 0px -80px;
   cursor: pointer;
 }
-span.tddtreeview-expander:hover
-{
-  background-position: -16px -80px;
-}
-.tddtreeview-exp-n span.tddtreeview-expander:hover /* Collapsed, not delayed, not last sibling */
-{
-  background-position: -16px -80px;
-}
-.tddtreeview-exp-cl span.tddtreeview-expander /* Collapsed, not delayed, last sibling */
-{
-}
-.tddtreeview-exp-cd span.tddtreeview-expander /* Collapsed, delayed, not last sibling */
-{
-}
-.tddtreeview-exp-cdl span.tddtreeview-expander /* Collapsed, delayed, last sibling */
-{
-}
-.tddtreeview-exp-e span.tddtreeview-expander,  /* Expanded, not delayed, not last sibling */
-.tddtreeview-exp-ed span.tddtreeview-expander,  /* Expanded, delayed, not last sibling */
-.tddtreeview-exp-el span.tddtreeview-expander,  /* Expanded, not delayed, last sibling */
-.tddtreeview-exp-edl span.tddtreeview-expander  /* Expanded, delayed, last sibling */
-{
-  background-position: -32px -80px;
-}
-.tddtreeview-exp-e span.tddtreeview-expander:hover,  /* Expanded, not delayed, not last sibling */
-.tddtreeview-exp-ed span.tddtreeview-expander:hover,  /* Expanded, delayed, not last sibling */
-.tddtreeview-exp-el span.tddtreeview-expander:hover,  /* Expanded, not delayed, last sibling */
-.tddtreeview-exp-edl span.tddtreeview-expander:hover  /* Expanded, delayed, last sibling */
-{
-  background-position: -48px -80px;
-}
-.tddtreeview-loading span.tddtreeview-expander  /* 'Loading' status overrides all others */
-{
+
+.simpletree-exp-c span.simpletree-expander { background-position: 0px -2px; }
+.simpletree-exp-e span.simpletree-expander { background-position: -16px -2px; }
+.simpletree-exp-c span.simpletree-icon { background-position: -1px -19px; }
+.simpletree-exp-e span.simpletree-icon { background-position: -26px -19px; }
+.simpletree-loading span.simpletree-expander {
   background-position: 0 0;
   background-image: url("images/loading.gif");
 }
 
-.tddtreeview-exp-n span.tddtreeview-expander, /* Connector instead of expander, if node has no children */
-.tddtreeview-exp-nl span.tddtreeview-expander
-{
-  background-image: none;
-  cursor: default;
-}
-
-span.tddtreeview-icon /* Default icon */
-{
-  margin-left: 3px;
-  background-position: 0px 0px;
-}
-.tddtreeview-ico-cf span.tddtreeview-icon { background-position: 0px -16px; } /* Collapsed Folder */
-.tddtreeview-ico-ef span.tddtreeview-icon { background-position: -64px -16px; } /* Expanded Folder */
-.tddtreeview-statusnode-wait span.tddtreeview-icon { background-image: url("images/loading.gif"); } /* Status node icons */
-.tddtreeview-statusnode-error span.tddtreeview-icon { background-position: 0px -112px; }
-
-.tddtreeview-title {
-  display: inline-block; /* Better alignment, when title contains <br> */
-  padding-left: 3px;
-  padding-right: 3px; /* Otherwise italic font will be outside bounds */
-  color: black; /* inherit doesn't work on IE */
+.simpletree-title {
+  display: inline-block; // Better alignment, when title contains <br>
+  padding-right: 3px;   // Otherwise italic font will be outside bounds
+  color: black;         // inherit doesn't work on IE
   vertical-align: top;
   margin: 0px;
-  margin-left: 3px;
-  border: 1px solid transparent; /* reserve some space for status borders */
+  border: 1px solid transparent; // reserve some space for status borders
   border-radius: 3px;
   text-decoration: none;
   cursor: pointer;
-}
-.tddtreeview-title a {
+
+  &:a {
     text-decoration: none;
     color: inherit;
-}
-
-span.tddtreeview-focused .tddtreeview-title {
-  outline: 1px dotted black;
-}
-
-/* active nodes inside an UN-focused tree are gray instead of blue*/
-span.tddtreeview-active .tddtreeview-title
-{
-  border: 1px solid #D9D9D9;
-  background: #E5E5E5; /* gray, Old browsers */
-  background: -moz-linear-gradient(top, #fafafb 0%, #e5e5e5 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafb), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #fafafb 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #fafafb 0%,#e5e5e5 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #fafafb 0%,#e5e5e5 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #fafafb 0%,#e5e5e5 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafb', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
-}
-
-.tddtreeview-focused span.tddtreeview-active .tddtreeview-title,
-span.tddtreeview-selected .tddtreeview-title
-{
-  border: 1px solid #99DEFD;
-  background: #f6fbfd; /* light blue, Old browsers */
-  background: -moz-linear-gradient(top, #f6fbfd 0%, #d5effc 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6fbfd), color-stop(100%,#d5effc)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f6fbfd 0%,#d5effc 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f6fbfd 0%,#d5effc 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f6fbfd 0%,#d5effc 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #f6fbfd 0%,#d5effc 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6fbfd', endColorstr='#d5effc',GradientType=0 ); /* IE6-9 */
-}
-
-span.tddtreeview-active .tddtreeview-title:hover,
-span.tddtreeview-active.tddtreeview-focused .tddtreeview-title,
-span.tddtreeview-selected .tddtreeview-title:hover,
-span.tddtreeview-selected.tddtreeview-focused .tddtreeview-title
-{
-  border: 1px solid #B6E6FB;
-  background: #f2f9fd; /* Old browsers */
-  background: -moz-linear-gradient(top, #f2f9fd 0%, #c4e8fa 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f9fd), color-stop(100%,#c4e8fa)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f2f9fd 0%,#c4e8fa 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f2f9fd 0%,#c4e8fa 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f2f9fd 0%,#c4e8fa 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #f2f9fd 0%,#c4e8fa 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f9fd', endColorstr='#c4e8fa',GradientType=0 ); /* IE6-9 */
+  }
 }

@@ -16,27 +16,29 @@
 </head>
 <body>
 
-  <input role="as-tree-dropdown" ref="#tree-data">
+  <input role="as-tree-dropdown">
 
   <p>别推我下去啊！别别别别别别别别别别别别别推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！推我下去啊！</p>
-
-  <div id="tree-data" style="display:none;">
-    [
-      { pid: 1, text: "root1",
-        children: [
-          { pid: 3, text: "node1" },
-          { pid: 4, text: "node2" },
-          { pid: 5, text: "node3" },
-        ]
-      },
-      { pid: 2, text: "root2", children: [] }
-    ]
-  </div>
 
   <script type="text/javascript">
   $(document).ready(function() {
 
-    $("input").treeSelect()
+    var data = [
+      { pid: 1, text: "智慧狮",
+        children: [
+          { pid: 2, text: "产品研发中心", children: [] },
+          { pid: 3, text: "内容研发中心", children: [] },
+        ]
+      }, {
+        pid: 4, text: "停用用户",
+        children: []
+      }
+    ];
+
+
+    $("input").treeSelect({
+      tree: { data: data }
+    })
 
   });
   </script>

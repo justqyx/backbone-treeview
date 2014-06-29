@@ -1,0 +1,11 @@
+[
+  { pid: 1, text: "智慧狮",
+    children: [
+      { pid: 2, text: "产品研发中心", children: [] },
+      { pid: 3, text: "内容研发中心", children: [] },
+    ]
+  }, {
+    pid: 4, text: "停用用户",
+    children: []
+  }
+]
