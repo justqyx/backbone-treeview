@@ -319,6 +319,10 @@
                 $tsText.css("width", w2);
                 $treeSelectbox.removeClass("selectbox-on");
 
+                if ($tsInput.val()) {
+                    $tsEmpty.css("display", "inline-block");
+                }
+
                 // the tree selectbox panel
                 $treeSelectPanel.css("display", "none");
 
