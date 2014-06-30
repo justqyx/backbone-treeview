@@ -161,18 +161,26 @@
 
             this.selectNodeByPid = function(pid) {
                 DB.selectedNodeContext = null;
+                var $node = null
+                  , _pid = null
+                  , node = HELPER.FindNodeByPid(DB.nodes, pid)
 
-                this.$el.find(".simpletree-node")
-                    .each(function(el, index){
-                        $node = $(el)
-                        _pid = parseInt($node.attr("_pid"))
-                        if (_pid == pid) {
-                            DB.selectedNodeContext = $node;
-                            $node.addClass("simpletree-node-active");
-                        } else {
-                            $node.removeClass("simpletree-node-active");
-                        }
-                    })
+                if (!node) {
+                    return false;
+                }
+
+                this.$el.find(".simpletree-node").each(function(index, el){
+                    $node = $(el)
+                    _pid  = parseInt($node.attr("_pid"))
+                    if (_pid == pid) {
+                        DB.selectedNodeContext = $node;
+                        $node.addClass("simpletree-node-active");
+                    } else {
+                        $node.removeClass("simpletree-node-active");
+                    }
+                })
+
+                return node;
             }
 
             this.unselectAll = function() {
@@ -180,7 +188,7 @@
                 DB.selectedNodeContext = null;
             }
 
-            function buildTree() {
+            function buildTree(_options_) {
                 if (treeObj.$el != null) {
                     treeObj.$el.empty();
                     treeObj.$el = null;
@@ -256,6 +264,7 @@
                         url: _settings.dataUrl,
                         type: "GET",
                         dataType: "JSON",
+                        async: false,
                         success: function(data, textStauts, jqXHR) {
                             DB.nodes = data;
                             buildTree();
@@ -312,6 +321,11 @@
             var w = $input.width()
               , w1 = w - 4       // 去掉 tsText 的左右 padding 值
               , w2 = w - 20      // 4 + 15 + 1;
+
+            this.updateTextAndValue = function(text, pid) {
+                $tsText.html(text);
+                $tsInput.val(pid);
+            }
 
             // 隐藏面板
             this.hide = function() {
@@ -483,14 +497,29 @@
                 $('body').append($treeSelectPanel);
             }
 
+            function loadSelectedNodeFromInput() {
+                var pid = parseInt($tsInput.val())
+
+                if (pid) {
+                    var node = treeddControl.treeObj.selectNodeByPid(pid);
+                    if (node) {
+                        treeddControl.updateTextAndValue(node.text, node.pid);
+                    }
+                }
+            }
+
             function buildTree() {
                 var tvConfig = _settings.tree;
 
+                // store current view prototype in TreeView
+                tvConfig.treeControl = treeddControl;
                 // Init the TreeView Container
                 tvConfig.renderTo = $tpBody;
 
                 treeddControl.treeObj = new TreeView(tvConfig);
-                treeddControl.treeObj.render();
+                treeddControl.treeObj.render()
+
+                loadSelectedNodeFromInput();
             }
 
             mergeConfiguration();   // 初始化配置
