@@ -305,8 +305,9 @@
                 // callback after click CALCEL_BUTTON
                 onCancelClick: null,
                 tree: {
-                    data: null,    // Build tree with data
-                    dataUrl: null  // IF data IS null THEN LOAD FROM SERVER
+                    data: null,     // Build tree with data
+                    dataUrl: null,  // IF data IS null THEN LOAD FROM SERVER
+                    inputChange: null,
                 }
             };
 
@@ -322,18 +323,13 @@
               , w1 = w - 4       // 去掉 tsText 的左右 padding 值
               , w2 = w - 20      // 4 + 15 + 1;
 
-            this.updateTextAndValue = function(text, pid) {
-                $tsText.html(text);
-                $tsInput.val(pid);
-            }
-
             // 隐藏面板
             this.hide = function() {
                 // the tree selectbox
                 $tsText.css("width", w2);
                 $treeSelectbox.removeClass("selectbox-on");
 
-                if ($tsInput.val()) {
+                if ($tsInput.val() != '') {
                     $tsEmpty.css("display", "inline-block");
                 }
 
@@ -441,13 +437,17 @@
             }
 
             function setupEvents() {
+                if (_settings.tree.inputChange) {
+                    $tsInput.on('smartchange', _settings.tree.inputChange)
+                }
+
                 $tsChoice.on('click', function(e) {
                     e.preventDefault();
                     treeddControl.toggle();
                 })
 
                 $tsEmpty.on('click', function(e) {
-                    $tsInput.val('')
+                    $tsInput.val('').trigger('smartchange')
                     $tsText.html('')
                     $tsEmpty.css("display", "none");
                     treeddControl.treeObj.unselectAll();
@@ -473,8 +473,8 @@
                         treeddControl.hide();
 
                         // Update display dom nodes
-                        $tsInput.val(node.pid)
                         $tsText.html(node.text)
+                        $tsInput.val(node.pid).trigger('smartchange')
 
                         $tsText.css("width", w2);
                         $tsEmpty.css("display", "inline-block");
@@ -503,7 +503,10 @@
                 if (pid) {
                     var node = treeddControl.treeObj.selectNodeByPid(pid);
                     if (node) {
-                        treeddControl.updateTextAndValue(node.text, node.pid);
+                        $tsText.css("width", w2)
+                        $tsText.html(node.text)
+                        $tsInput.val(node.pid)
+                        $tsEmpty.css("display", "inline-block");
                     }
                 }
             }
