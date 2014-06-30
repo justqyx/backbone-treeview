@@ -187,7 +187,8 @@ span.simpletree-empty {
   vertical-align: middle;
 }
 
-span.simpletree-expander {
+span.simpletree-expander,
+span.simpletree-empty {
   display: inline-block;
   margin: 0 3px;
   width: 15px;
