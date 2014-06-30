@@ -209,11 +209,11 @@
                         if ($this.hasClass("simpletree-exp-c")) {
                             $this.addClass("simpletree-exp-e");
                             $this.removeClass("simpletree-exp-c");
-                            $this.siblings("ul").css("display", "block");
+                            $this.siblings("ul").slideDown(100);
                         } else {
                             $this.addClass("simpletree-exp-c");
                             $this.removeClass("simpletree-exp-e");
-                            $this.siblings("ul").css("display", "none");
+                            $this.siblings("ul").slideUp(100);
                         }
                     } else {
                         if (DB.selectedNodeContext) {
@@ -223,6 +223,28 @@
                         DB.selectedNodeContext = $this;
                     }
                 });
+                treeObj.$el.find(".simpletree-node .simpletree-expander").on('click', function(e) {
+                    var $parent = $(this).parent(".simpletree-node")
+                        , pid = parseInt($parent.attr("_pid"))
+                        , currentPid = null
+
+                    if (DB.selectedNodeContext) {
+                        currentPid = parseInt(DB.selectedNodeContext.attr("_pid"))
+                    }
+
+                    if (pid != currentPid) {
+                        if ($parent.hasClass('simpletree-exp-c')) {
+                            $parent.addClass("simpletree-exp-e");
+                            $parent.removeClass("simpletree-exp-c");
+                            $parent.siblings("ul").slideDown(100);
+                        } else {
+                            $parent.addClass("simpletree-exp-c");
+                            $parent.removeClass("simpletree-exp-e");
+                            $parent.siblings("ul").slideUp(100);
+                        }
+                    }
+
+                })
             }
 
             this.render = function() {
